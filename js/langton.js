@@ -32,6 +32,7 @@ class Langton {
 
 
         $('.condition').show();
+
         $(this.Simulation).on('reset', $.proxy(this.onResetClick, this))
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
         $(this.Simulation).on('forward', $.proxy(this.avancerFourmi, this))
@@ -48,10 +49,11 @@ class Langton {
         $('.ant-direction').text(this.Ant.Direction)
         $('.ant-nb-steps').text(this.Ant.NbSteps)
     }
-    
+
     onResetClick(e) {
-        $('#Start').text('Démarrer')
+        $('#Start').text('Demarrer')
         clearInterval(this.setIntervalVar);
+        this.lancer=false
         this.Grid.Size = this.Simulation.Size
         this.Ant.Reset(this.Grid.MiddleX, this.Grid.MiddleY)
     }
