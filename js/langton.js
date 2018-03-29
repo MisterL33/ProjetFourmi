@@ -50,7 +50,7 @@ class Langton {
          this.Ant.TurnRight()
       }
       if(caseColor === '#000000'){
-         this.Grid.SetColor(this.Ant.X, this.Ant.Y, '##FFFFFF')
+         this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#FFFFFF')
          this.Ant.TurnLeft()
       }
 
