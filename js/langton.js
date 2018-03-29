@@ -45,6 +45,9 @@ class Langton {
       let turn = this.Ant.Direction
       let nbSteps = $('#NbSteps').val()
       console.log(caseColor)
+
+      for(let i=0; i <= nbSteps; i++){
+
       if(caseColor === '#FFFFFF'){
          this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#000000')
          this.Ant.TurnRight()
@@ -53,7 +56,7 @@ class Langton {
          this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#FFFFFF')
          this.Ant.TurnLeft()
       }
-
+}
 
       console.log('izi')
     }
