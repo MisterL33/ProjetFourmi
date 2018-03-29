@@ -6,9 +6,37 @@ class Pattern {
         $($.proxy(this.onReady, this))
     }
     onReady() {
-        
+
         console.log("Pattern.onReady")
+
+
+        // chargement des pattern
+
+        $.ajax({
+            type: "GET",
+            url: "https://api.myjson.com/bins/crrrn",
+            dataType: "json",
+            success: function (data) {
+
+                Pattern.populatePattern(data)
+            }
+        });
+
     }
+
+    static populatePattern(data) {
+
+        $.each(data.patterns, function (key, value) {
+            $('#Pattern').append($('<option>', {
+                value: value.name,
+                text: value.name
+            }));
+        });
+       
+
+    }
+
+
     static GetSelect(json, selected) {
         let html = '<select>'
         for (var property in json) {

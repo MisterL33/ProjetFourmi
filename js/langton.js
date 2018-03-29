@@ -15,6 +15,7 @@ class Langton {
         this.setIntervalVar = null
         this.fourmiSortie = false
         this.lancer = false
+        
     }
 
 
@@ -28,6 +29,7 @@ class Langton {
         this.Grid = new Grid("Grid", this.Simulation.Size)
         this.Ant = new Ant(this.Grid.MiddleX, this.Grid.MiddleY)
         this.displayAntInfo()
+
 
         $('.condition').show();
         $(this.Simulation).on('reset', $.proxy(this.onResetClick, this))
@@ -103,7 +105,7 @@ class Langton {
     }
 
 
-
+ 
 
 
 
