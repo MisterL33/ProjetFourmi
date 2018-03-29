@@ -34,7 +34,6 @@ class Simulation {
         $(this).trigger('run')
     }
 
-
     onSelectChange(e){
         let interval = $('#Interval').val()
         $(this).trigger('change', [{interval:interval}])

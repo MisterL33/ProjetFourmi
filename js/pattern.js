@@ -6,6 +6,7 @@ class Pattern {
         $($.proxy(this.onReady, this))
     }
     onReady() {
+        
         console.log("Pattern.onReady")
     }
     static GetSelect(json, selected) {

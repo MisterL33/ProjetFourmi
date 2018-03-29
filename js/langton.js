@@ -14,6 +14,7 @@ class Langton {
         this.Simulation = new Simulation()
         this.setIntervalVar = null
         this.fourmiSortie = false
+        this.lancer = false
     }
 
 
@@ -33,6 +34,7 @@ class Langton {
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
         $(this.Simulation).on('forward', $.proxy(this.avancerFourmi, this))
         $(this.Simulation).on('run', $.proxy(this.onRunClick, this))
+        $(this.Simulation).on('stop', $.proxy(this.onStopClick, this))
         $(this.Simulation).on('change', $.proxy(this.onSelectChange, this))
 
         console.log("Langton.onReady")
@@ -44,7 +46,10 @@ class Langton {
         $('.ant-direction').text(this.Ant.Direction)
         $('.ant-nb-steps').text(this.Ant.NbSteps)
     }
+    
     onResetClick(e) {
+        $('#Start').text('Démarrer')
+        clearInterval(this.setIntervalVar);
         this.Grid.Size = this.Simulation.Size
         this.Ant.Reset(this.Grid.MiddleX, this.Grid.MiddleY)
     }
@@ -77,20 +82,16 @@ class Langton {
     }
 
     onRunClick(e) {
-        let interval = $('#Interval').val()
-        
-        $('#Start').text('Stop')
-
-        setTimeout(function () {
-            if ($('#Start').text() === 'Stop') {
-                clearInterval(this.setIntervalVar);
-            }
-        }, 1000);
-
-
-        this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), interval)
-
-
+        if(!this.lancer){
+            let interval = $('#Interval').val()
+            this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), interval)
+            $('#Start').text('Stop')
+            this.lancer=true
+        }else{
+            $('#Start').text('Demarrer')
+            clearInterval(this.setIntervalVar);
+            this.lancer=false
+        }
     }
 
     onSelectChange(e, data) {
