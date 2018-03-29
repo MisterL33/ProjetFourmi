@@ -19,11 +19,11 @@ class Langton {
         this.Ant = new Ant(this.Grid.MiddleX, this.Grid.MiddleY)
         this.displayAntInfo()
 
+        $('.condition').show();
         $(this.Simulation).on('reset', $.proxy(this.onResetClick, this))
-
-        console.log(this.Ant)
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
-        $('#MoveForward').on("click", $.proxy(this.avancerFourmi, this))
+        $(this.Simulation).on('forward',$.proxy(this.avancerFourmi,this))
+        $(this.Simulation).on('run',$.proxy(this.onRunClick,this))
 
         console.log("Langton.onReady")
     }
@@ -44,7 +44,6 @@ class Langton {
         let caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
         let turn = this.Ant.Direction
         let nbSteps = $('#NbSteps').val()
-        console.log(caseColor)
 
         for (let i = 0; i < nbSteps; i++) {
             caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
@@ -58,10 +57,11 @@ class Langton {
                 this.Ant.TurnLeft()
             }
         }
-
-        console.log('izi')
     }
 
+    onRunClick(e){
+        let test = setInterval($.proxy(this.avancerFourmi,this), 100)
+    }
 }
 
 let langton = new Langton()

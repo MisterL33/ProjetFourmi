@@ -8,6 +8,8 @@ class Simulation {
     onReady() {
         $('#Reset').on('click', $.proxy(this.onBtnResetClick, this))
         $('input[type=radio]').on('change', $.proxy(this.onRadioChange, this))
+        $('#Start').on('click',$.proxy(this.onRunClick,this))
+        $('#MoveForward').on("click", $.proxy(this.onForwardClick, this))
         console.log("Simulation.onReady")
     }
     get Size() {
@@ -20,5 +22,13 @@ class Simulation {
 
     onRadioChange(e){
         $(this).trigger('reset')
+    }
+
+    onForwardClick(e){
+        $(this).trigger('forward')
+    }
+
+    onRunClick(e){
+        $(this).trigger('run')
     }
 }
