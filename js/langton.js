@@ -1,15 +1,22 @@
 /// <reference path="ant.js" />
 /// <reference path="grid.js" />
 /// <reference path="pattern.js" />
-/// <reference path="simulation.js" />import { setInterval } from "timers";
+/// <reference path="simulation.js" />import { setInterval } from "timers";import { setTimeout } from "timers";
+
+
 
 
 
 class Langton {
+
     constructor() {
         this.Pattern = new Pattern()
         this.Simulation = new Simulation()
+        this.setIntervalVar = null
+        this.fourmiSortie = false
     }
+
+
     RegisterOnReady() {
         this.Pattern.RegisterOnReady()
         this.Simulation.RegisterOnReady()
@@ -24,9 +31,9 @@ class Langton {
         $('.condition').show();
         $(this.Simulation).on('reset', $.proxy(this.onResetClick, this))
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
-        $(this.Simulation).on('forward',$.proxy(this.avancerFourmi,this))
-        $(this.Simulation).on('run',$.proxy(this.onRunClick,this))
-
+        $(this.Simulation).on('forward', $.proxy(this.avancerFourmi, this))
+        $(this.Simulation).on('run', $.proxy(this.onRunClick, this))
+        $(this.Simulation).on('change', $.proxy(this.onSelectChange, this))
 
         console.log("Langton.onReady")
     }
@@ -49,6 +56,7 @@ class Langton {
         let turn = this.Ant.Direction
         let nbSteps = $('#NbSteps').val()
 
+
         for (let i = 0; i < nbSteps; i++) {
             caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
             turn = this.Ant.Direction
@@ -60,12 +68,46 @@ class Langton {
                 this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#FFFFFF')
                 this.Ant.TurnLeft()
             }
+
+            if (this.Grid.GetColor(this.Ant.X, this.Ant.Y) === null && this.fourmiSortie === false) {
+                alert('La fourmie est partie')
+                this.fourmiSortie = true
+            }
         }
     }
 
-    onRunClick(e){
-        let test = setInterval($.proxy(this.avancerFourmi,this), 100)
+    onRunClick(e) {
+        let interval = $('#Interval').val()
+        
+        $('#Start').text('Stop')
+
+        setTimeout(function () {
+            if ($('#Start').text() === 'Stop') {
+                clearInterval(this.setIntervalVar);
+            }
+        }, 1000);
+
+
+        this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), interval)
+
+
     }
+
+    onSelectChange(e, data) {
+        console.log(this.setInterval)
+        if (this.setInterval !== undefined) {
+            clearInterval(this.setIntervalVar);
+            this.setInterval = setInterval($.proxy(this.avancerFourmi, this), data.interval)
+        }
+    }
+
+
+
+
+
+
+
+
 }
 
 let langton = new Langton()

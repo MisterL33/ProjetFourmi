@@ -10,6 +10,8 @@ class Simulation {
         $('input[type=radio]').on('change', $.proxy(this.onRadioChange, this))
         $('#Start').on('click',$.proxy(this.onRunClick,this))
         $('#MoveForward').on("click", $.proxy(this.onForwardClick, this))
+        $('#Interval').on("change", $.proxy(this.onSelectChange, this))
+
         console.log("Simulation.onReady")
     }
     get Size() {
@@ -30,5 +32,11 @@ class Simulation {
 
     onRunClick(e){
         $(this).trigger('run')
+    }
+
+
+    onSelectChange(e){
+        let interval = $('#Interval').val()
+        $(this).trigger('change', [{interval:interval}])
     }
 }
