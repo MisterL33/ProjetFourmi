@@ -17,7 +17,7 @@ class Langton {
     onReady() {
         this.Grid = new Grid("Grid", this.Simulation.Size)
         this.Ant = new Ant(this.Grid.MiddleX, this.Grid.MiddleY)
-  
+        this.displayAntInfo()
         console.log(this.Ant)
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
 
@@ -25,7 +25,10 @@ class Langton {
     }
     displayAntInfo() {
         this.Grid.SetColor(this.Ant.X, this.Ant.Y, Ant.Color)
-
+        $('.ant-x').text(this.Ant.X)
+        $('.ant-y').text(this.Ant.Y)
+        $('.ant-direction').text(this.Ant.Direction)
+        $('.ant-nb-steps').text(this.Ant.NbSteps)
     }
 }
 
