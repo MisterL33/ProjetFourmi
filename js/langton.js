@@ -47,7 +47,8 @@ class Langton {
       console.log(caseColor)
 
       for(let i=0; i <= nbSteps; i++){
-
+caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
+turn = this.Ant.Direction
       if(caseColor === '#FFFFFF'){
          this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#000000')
          this.Ant.TurnRight()
