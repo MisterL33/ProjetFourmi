@@ -19,7 +19,7 @@ class Langton {
         this.Ant = new Ant(this.Grid.MiddleX, this.Grid.MiddleY)
         this.displayAntInfo()
 
-        $(this.Simulation).on('reset',$.proxy(this.onResetClick,this))
+        $(this.Simulation).on('reset', $.proxy(this.onResetClick, this))
 
         console.log(this.Ant)
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
@@ -34,32 +34,32 @@ class Langton {
         $('.ant-direction').text(this.Ant.Direction)
         $('.ant-nb-steps').text(this.Ant.NbSteps)
     }
-    onResetClick(e){
-        this.Grid.Size=this.Simulation.Size
-        this.Ant.Reset(this.Grid.MiddleX,this.Grid.MiddleY)
+    onResetClick(e) {
+        this.Grid.Size = this.Simulation.Size
+        this.Ant.Reset(this.Grid.MiddleX, this.Grid.MiddleY)
     }
 
-    avancerFourmi(){
-      // on set les infos
-      let caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
-      let turn = this.Ant.Direction
-      let nbSteps = $('#NbSteps').val()
-      console.log(caseColor)
+    avancerFourmi() {
+        // on set les infos
+        let caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
+        let turn = this.Ant.Direction
+        let nbSteps = $('#NbSteps').val()
+        console.log(caseColor)
 
-      for(let i=0; i <= nbSteps; i++){
-caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
-turn = this.Ant.Direction
-      if(caseColor === '#FFFFFF'){
-         this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#000000')
-         this.Ant.TurnRight()
-      }
-      if(caseColor === '#000000'){
-         this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#FFFFFF')
-         this.Ant.TurnLeft()
-      }
-}
+        for (let i = 0; i < nbSteps; i++) {
+            caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
+            turn = this.Ant.Direction
+            if (caseColor === '#FFFFFF') {
+                this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#000000')
+                this.Ant.TurnRight()
+            }
+            if (caseColor === '#000000') {
+                this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#FFFFFF')
+                this.Ant.TurnLeft()
+            }
+        }
 
-      console.log('izi')
+        console.log('izi')
     }
 
 }
