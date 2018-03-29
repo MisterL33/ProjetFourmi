@@ -1,7 +1,9 @@
 /// <reference path="ant.js" />
 /// <reference path="grid.js" />
 /// <reference path="pattern.js" />
-/// <reference path="simulation.js" />
+/// <reference path="simulation.js" />import { setInterval } from "timers";
+
+
 
 class Langton {
     constructor() {
@@ -25,6 +27,7 @@ class Langton {
         $(this.Simulation).on('forward',$.proxy(this.avancerFourmi,this))
         $(this.Simulation).on('run',$.proxy(this.onRunClick,this))
 
+
         console.log("Langton.onReady")
     }
     displayAntInfo() {
@@ -38,6 +41,7 @@ class Langton {
         this.Grid.Size = this.Simulation.Size
         this.Ant.Reset(this.Grid.MiddleX, this.Grid.MiddleY)
     }
+
 
     avancerFourmi() {
         // on set les infos
