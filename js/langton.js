@@ -68,10 +68,10 @@ class Langton {
         let nbSteps = $('#NbSteps').val()
         let self = this // permet de recup la classe dans le each
       
-
+        for (let i = 0; i < nbSteps; i++) {
         $.each(Pattern.selectedPatternData.steps, function (key, value) {
            
-            for (let i = 0; i < nbSteps; i++) {
+ 
                 caseColor = self.Grid.GetColor(self.Ant.X, self.Ant.Y)
                 turn = self.Ant.Direction
                 if(caseColor === value.if){
@@ -79,9 +79,14 @@ class Langton {
                     self.Grid.SetColor(self.Ant.X, self.Ant.Y, value.then.color)
                     self.Ant.Turn(value.then.direction)
                 }
-            }        
-        })
 
+                if (self.Grid.GetColor(self.Ant.X, self.Ant.Y) === null && self.fourmiSortie === false) {
+                    alert('La fourmie est partie')
+                    self.fourmiSortie = true
+                }
+              
+        })
+    }
         
       
 
