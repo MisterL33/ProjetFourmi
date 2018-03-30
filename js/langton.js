@@ -54,6 +54,7 @@ class Langton {
 
     onResetClick(e) {
         $('#Start').text('Demarrer')
+        this.fourmiSortie=false
         clearInterval(this.setIntervalVar);
         this.lancer=false
         this.Grid.Size = this.Simulation.Size
