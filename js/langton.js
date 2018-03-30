@@ -16,6 +16,7 @@ class Langton {
         this.fourmiSortie = false
         this.lancer = false
         
+        
     }
 
 
@@ -60,29 +61,33 @@ class Langton {
     }
 
 
-    avancerFourmi() {
+    avancerFourmi(pattern) {
         // on set les infos
         let caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
         let turn = this.Ant.Direction
         let nbSteps = $('#NbSteps').val()
+        let self = this // permet de recup la classe dans le each
+      
 
+        $.each(Pattern.selectedPatternData.steps, function (key, value) {
+            
+            caseColor = self.Grid.GetColor(self.Ant.X, self.Ant.Y)
+            turn = self.Ant.Direction
+           
+            for (let i = 0; i < nbSteps; i++) {
+                if(caseColor === value.if){
+               
+                    self.Grid.SetColor(self.Ant.X, self.Ant.Y, value.then.color)
+                    self.Ant.Turn(value.then.direction)
+                }
+            }
+            
+            
+        })
 
-        for (let i = 0; i < nbSteps; i++) {
-            caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
-            turn = this.Ant.Direction
-            if (caseColor === '#FFFFFF') {
-                this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#000000')
-                this.Ant.TurnRight()
-            }
-            if (caseColor === '#000000') {
-                this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#FFFFFF')
-                this.Ant.TurnLeft()
-            }
-            if (this.Grid.GetColor(this.Ant.X, this.Ant.Y) === null && this.fourmiSortie === false) {
-                alert('La fourmie est partie')
-                this.fourmiSortie = true
-            }
-        }
+        
+      
+
     }
 
     onRunClick(e) {

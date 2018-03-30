@@ -1,6 +1,8 @@
 
 class Pattern {
     constructor() {
+        this.allPatternData = null
+        this.selectedPatternData = null
     }
     RegisterOnReady() {
         $($.proxy(this.onReady, this))
@@ -20,6 +22,8 @@ class Pattern {
             success: function (data) {
                 Pattern.populatePattern(data)
                 Pattern.getStepByName($('#Pattern').val())
+                this.allPaternData = data.pattterns 
+                this.selectedPatternData = data.patterns[0]
             }
         })
     }
@@ -42,9 +46,12 @@ class Pattern {
                 $('tbody').empty()
                 $.each(data.patterns, function (key, value) {
                     if(value.name===name){
+                        Pattern.selectedPatternData = value
                         $.each(value.steps,function(key,value2){
                             let html=Pattern.GetHtmlRow(value2)
                             $('tbody').append(html)
+                            
+                            
                         })
                     }
                 })
