@@ -34,6 +34,7 @@ class Langton {
         $('.condition').show();
 
         $(this.Simulation).on('reset', $.proxy(this.onResetClick, this))
+        $(this.Pattern).on('reset', $.proxy(this.onResetClick, this))
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
         $(this.Simulation).on('forward', $.proxy(this.avancerFourmi, this))
         $(this.Simulation).on('run', $.proxy(this.onRunClick, this))

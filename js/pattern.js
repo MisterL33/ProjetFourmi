@@ -8,34 +8,48 @@ class Pattern {
     onReady() {
 
         console.log("Pattern.onReady")
-
-
         // chargement des pattern
+
+        $('#Pattern').on('change',$.proxy(this.onPatternChange,this))
 
         $.ajax({
             type: "GET",
             url: "https://api.myjson.com/bins/crrrn",
             dataType: "json",
             success: function (data) {
-
                 Pattern.populatePattern(data)
+                Pattern.getStepByName($('#Pattern').val())
             }
-        });
-
+        })
     }
 
     static populatePattern(data) {
-
         $.each(data.patterns, function (key, value) {
             $('#Pattern').append($('<option>', {
                 value: value.name,
                 text: value.name
-            }));
-        });
-       
-
+            }))
+        })
     }
 
+    static getStepByName(name){
+        $.ajax({
+            type: "GET",
+            url: "https://api.myjson.com/bins/crrrn",
+            dataType: "json",
+            success: function (data) {
+                $('tbody').empty()
+                $.each(data.patterns, function (key, value) {
+                    if(value.name===name){
+                        $.each(value.steps,function(key,value2){
+                            let html=Pattern.GetHtmlRow(value2)
+                            $('tbody').append(html)
+                        })
+                    }
+                })
+            }
+        })
+    }
 
     static GetSelect(json, selected) {
         let html = '<select>'
@@ -51,6 +65,7 @@ class Pattern {
         html += '</select>'
         return html
     }
+
     static GetHtmlRow(step) {
         let settings = $.extend({
             if: "#FFFFFF",
@@ -66,6 +81,11 @@ class Pattern {
         html += '<td class="then-direction">' + Pattern.GetSelect(PatternDirection, settings.then.direction) + '</td>'
         html += '</tr>'
         return html
+    }
+
+    onPatternChange(e){
+        $(this).trigger('reset')
+        Pattern.getStepByName($(e.currentTarget).val())
     }
 }
 
