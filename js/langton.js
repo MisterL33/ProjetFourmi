@@ -61,7 +61,7 @@ class Langton {
     }
 
 
-    avancerFourmi(pattern) {
+    avancerFourmi() {
         // on set les infos
         let caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
         let turn = this.Ant.Direction
@@ -80,12 +80,13 @@ class Langton {
                     self.Ant.Turn(value.then.direction)
                 }
 
-                if (self.Grid.GetColor(self.Ant.X, self.Ant.Y) === null && self.fourmiSortie === false) {
-                    alert('La fourmie est partie')
-                    self.fourmiSortie = true
-                }
+                
               
         })
+        if (self.Grid.GetColor(self.Ant.X, self.Ant.Y) === null && self.fourmiSortie === false) {
+            alert('La fourmie est partie')
+            self.fourmiSortie = true
+        }
     }
         
       
@@ -106,10 +107,13 @@ class Langton {
     }
 
     onSelectChange(e, data) {
-        console.log(this.setInterval)
-        if (this.setInterval !== undefined) {
+
+        if (this.setIntervalVar !== undefined) {
+            console.log('here')
+            console.log(data)
             clearInterval(this.setIntervalVar);
-            this.setInterval = setInterval($.proxy(this.avancerFourmi, this), data.interval)
+          
+            this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), data.interval)
         }
     }
 
