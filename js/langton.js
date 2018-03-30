@@ -61,17 +61,17 @@ class Langton {
     }
 
 
-    avancerFourmi(pattern) {
+    avancerFourmi() {
         // on set les infos
         let caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
         let turn = this.Ant.Direction
         let nbSteps = $('#NbSteps').val()
         let self = this // permet de recup la classe dans le each
       
-
+        for (let i = 0; i < nbSteps; i++) {
         $.each(Pattern.selectedPatternData.steps, function (key, value) {
            
-            for (let i = 0; i < nbSteps; i++) {
+ 
                 caseColor = self.Grid.GetColor(self.Ant.X, self.Ant.Y)
                 turn = self.Ant.Direction
                 if(caseColor === value.if){
@@ -79,9 +79,15 @@ class Langton {
                     self.Grid.SetColor(self.Ant.X, self.Ant.Y, value.then.color)
                     self.Ant.Turn(value.then.direction)
                 }
-            }        
-        })
 
+                
+              
+        })
+        if (self.Grid.GetColor(self.Ant.X, self.Ant.Y) === null && self.fourmiSortie === false) {
+            alert('La fourmie est partie')
+            self.fourmiSortie = true
+        }
+    }
         
       
 
@@ -101,10 +107,13 @@ class Langton {
     }
 
     onSelectChange(e, data) {
-        console.log(this.setInterval)
-        if (this.setInterval !== undefined) {
+
+        if (this.setIntervalVar !== undefined) {
+            console.log('here')
+            console.log(data)
             clearInterval(this.setIntervalVar);
-            this.setInterval = setInterval($.proxy(this.avancerFourmi, this), data.interval)
+          
+            this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), data.interval)
         }
     }
 

@@ -36,6 +36,7 @@ class Simulation {
 
     onSelectChange(e){
         let interval = $('#Interval').val()
+        
         $(this).trigger('change', [{interval:interval}])
     }
 }
