@@ -1,6 +1,6 @@
 
 class Pattern {
-   
+
     constructor() {
         this.allPatternData = null
         this.selectedPatternData = null
@@ -41,13 +41,13 @@ class Pattern {
     }
 
     static getStepByName(name) {
-        let siCouleur=null
-        let thenColor=null
-        let thenDirection=null
-        let actualRowValue=null
+        let siCouleur = null
+        let thenColor = null
+        let thenDirection = null
+        let actualRowValue = null
         let obj = []
         Pattern.jsonFromHtml = []
-        console.log(Pattern.jsonFromHtml)
+
         $.ajax({
             type: "GET",
             url: "https://api.myjson.com/bins/crrrn",
@@ -62,11 +62,10 @@ class Pattern {
                         $.each(value.steps, function (key, value2) {
                             let html = Pattern.GetHtmlRow(value2)
                             $('tbody').append(html)
-                            var tbl = $(html).get().map(function(row) {
-                                return $(row).find('td').get().map(function(cell) {
-                                    if($(cell).parent().attr("data-if-color")){
+                            var tbl = $(html).get().map(function (row) {
+                                return $(row).find('td').get().map(function (cell) {
+                                    if ($(cell).parent().attr("data-if-color")) {
                                         siCouleur = $(cell).parent().attr("data-if-color")
-
                                     }
                                     if ($(cell).hasClass("then-color")) {
                                         thenColor = $(cell).find(":selected").val();
@@ -74,20 +73,18 @@ class Pattern {
                                     if ($(cell).hasClass("then-direction")) {
                                         thenDirection = $(cell).find(":selected").val();
                                     }
-                                    
-                                    
-                                    
-                                  return $(cell).html();
+
+                                    return $(cell).html();
                                 });
-                              });
-                              
-                           obj.push({'if': siCouleur, 'then':{'color': thenColor, 'direction': thenDirection}})
-                           
+                            });
+
+                            obj.push({ 'if': siCouleur, 'then': { 'color': thenColor, 'direction': thenDirection } })
+
                         })
                     }
                 })
                 Pattern.jsonFromHtml = obj
-            console.log(Pattern.jsonFromHtml)
+
             }
         })
     }
@@ -134,16 +131,17 @@ class Pattern {
 
     onColorChange(e) {
         $(e.currentTarget).parent('td').parent('tr').nextAll('tr').each($.proxy(this.ClearRow, this))
-        $(e.currentTarget).parent('td').parent('tr').prevAll('tr').each($.proxy(function(i,f){this.checkIfColorAvalaible(i,f,e.currentTarget)},this))
+        $(e.currentTarget).parent('td').parent('tr').prevAll('tr').each($.proxy(function (i, f) { this.checkIfColorAvalaible(i, f, e.currentTarget) }, this))
 
-        if(!this.controleDispoColor){
+        if (!this.controleDispoColor) {
             alert('couleur déja utilisé')
             $(e.currentTarget).val('#FFFFFF')
         }
 
-        if($(e.currentTarget).val()!='#FFFFFF'){
-            let jsonObj = {"if": $(e.currentTarget).val()}
+        if ($(e.currentTarget).val() != '#FFFFFF') {
+            let jsonObj = { "if": $(e.currentTarget).val() }
             $('tbody').append(Pattern.GetHtmlRow(jsonObj))
+
         }
     }
 
@@ -151,9 +149,9 @@ class Pattern {
         $(e).remove()
     }
 
-    checkIfColorAvalaible(i,e,parent){
-        if($(e).children('.then-color').children('select').val() == $(parent).val()){
-            this.controleDispoColor=false
+    checkIfColorAvalaible(i, e, parent) {
+        if ($(e).children('.then-color').children('select').val() == $(parent).val()) {
+            this.controleDispoColor = false
         }
     }
 }

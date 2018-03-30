@@ -68,9 +68,9 @@ class Langton {
         let turn = this.Ant.Direction
         let nbSteps = $('#NbSteps').val()
         let self = this // permet de recup la classe dans le each
-      console.log(Pattern.jsonFromHtml)
+
         for (let i = 0; i < nbSteps; i++) {
-        $.each(Pattern.selectedPatternData.steps, function (key, value) {
+        $.each(Pattern.jsonFromHtml, function (key, value) {
            
  
                 caseColor = self.Grid.GetColor(self.Ant.X, self.Ant.Y)
@@ -110,8 +110,7 @@ class Langton {
     onSelectChange(e, data) {
 
         if (this.setIntervalVar !== undefined) {
-            console.log('here')
-            console.log(data)
+
             clearInterval(this.setIntervalVar);
           
             this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), data.interval)
