@@ -97,11 +97,28 @@ class Pattern {
     }
 
     onColorChange(e){
-        console.log($(e.currentTarget).parent('td').parent('tr').nextAll('tr').each($.proxy(this.ClearRow, this)))
+        $(e.currentTarget).parent('td').parent('tr').nextAll('tr').each($.proxy(this.ClearRow, this))
+
+        $(e.currentTarget).parent('td').parent('tr').prevAll('tr').each($.proxy(function(i,f){this.checkIfColorAvalaible(i,f,e.currentTarget)},this))
+
+
+        if($(e.currentTarget).val()!='#FFFFFF'){
+            let jsonObj = {"if": $(e.currentTarget).val()}
+            $('tbody').append(Pattern.GetHtmlRow(jsonObj))
+        }
     }
 
     ClearRow(i, e) {
-        $(e).empty()
+        $(e).remove()
+    }
+
+    checkIfColorAvalaible(i,e,parent){
+        if($(e).children('.then-color').children('select').val() == $(parent).val()){
+            console.log('dispo')
+        }else{
+            alert('couleur deja utilisé')
+            $(parent).val('#FFFFFF')
+        }
     }
 }
 
