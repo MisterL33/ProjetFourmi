@@ -78,7 +78,6 @@ class Langton {
                 this.Grid.SetColor(this.Ant.X, this.Ant.Y, '#FFFFFF')
                 this.Ant.TurnLeft()
             }
-
             if (this.Grid.GetColor(this.Ant.X, this.Ant.Y) === null && this.fourmiSortie === false) {
                 alert('La fourmie est partie')
                 this.fourmiSortie = true

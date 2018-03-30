@@ -11,7 +11,8 @@ class Pattern {
         // chargement des pattern
 
         $('#Pattern').on('change',$.proxy(this.onPatternChange,this))
-
+        $('tbody').on('change','.then-color > select',$.proxy(this.onColorChange,this))
+        
         $.ajax({
             type: "GET",
             url: "https://api.myjson.com/bins/crrrn",
@@ -86,6 +87,14 @@ class Pattern {
     onPatternChange(e){
         $(this).trigger('reset')
         Pattern.getStepByName($(e.currentTarget).val())
+    }
+
+    onColorChange(e){
+        console.log($(e.currentTarget).parent('td').parent('tr').nextAll('tr').each($.proxy(this.ClearRow, this)))
+    }
+
+    ClearRow(i, e) {
+        $(e).empty()
     }
 }
 
