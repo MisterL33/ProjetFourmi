@@ -70,19 +70,16 @@ class Langton {
       
 
         $.each(Pattern.selectedPatternData.steps, function (key, value) {
-            
-            caseColor = self.Grid.GetColor(self.Ant.X, self.Ant.Y)
-            turn = self.Ant.Direction
            
             for (let i = 0; i < nbSteps; i++) {
+                caseColor = self.Grid.GetColor(self.Ant.X, self.Ant.Y)
+                turn = self.Ant.Direction
                 if(caseColor === value.if){
                
                     self.Grid.SetColor(self.Ant.X, self.Ant.Y, value.then.color)
                     self.Ant.Turn(value.then.direction)
                 }
-            }
-            
-            
+            }        
         })
 
         
