@@ -3,6 +3,7 @@ class Pattern {
     constructor() {
         this.allPatternData = null
         this.selectedPatternData = null
+
     }
     RegisterOnReady() {
         $($.proxy(this.onReady, this))
@@ -12,9 +13,9 @@ class Pattern {
         console.log("Pattern.onReady")
         // chargement des pattern
 
-        $('#Pattern').on('change',$.proxy(this.onPatternChange,this))
-        $('tbody').on('change','.then-color > select',$.proxy(this.onColorChange,this))
-        
+        $('#Pattern').on('change', $.proxy(this.onPatternChange, this))
+        $('tbody').on('change', '.then-color > select', $.proxy(this.onColorChange, this))
+
         $.ajax({
             type: "GET",
             url: "https://api.myjson.com/bins/crrrn",
@@ -22,7 +23,7 @@ class Pattern {
             success: function (data) {
                 Pattern.populatePattern(data)
                 Pattern.getStepByName($('#Pattern').val())
-                this.allPaternData = data.pattterns 
+                this.allPaternData = data.pattterns
                 this.selectedPatternData = data.patterns[0]
             }
         })
@@ -37,21 +38,52 @@ class Pattern {
         })
     }
 
-    static getStepByName(name){
+    static getStepByName(name) {
+
+        Pattern.jsonFromHtml = []
+        console.log(Pattern.jsonFromHtml)
         $.ajax({
             type: "GET",
             url: "https://api.myjson.com/bins/crrrn",
             dataType: "json",
             success: function (data) {
                 $('tbody').empty()
+
+
                 $.each(data.patterns, function (key, value) {
-                    if(value.name===name){
+                    if (value.name === name) {
                         Pattern.selectedPatternData = value
-                        $.each(value.steps,function(key,value2){
-                            let html=Pattern.GetHtmlRow(value2)
+                        $.each(value.steps, function (key, value2) {
+                            let html = Pattern.GetHtmlRow(value2)
                             $('tbody').append(html)
-                            
-                            
+                            let row = $(html)[0].childNodes
+                            $.each(row, function (key3, value3) {
+                                let actualRowValue = null
+                                let actualRowObject = {}
+                                let siCouleur = null
+                                if ($(value3).hasClass("if-color")) {
+                                    console.log('if')
+                                    siCouleur = $(value3).parent().attr("data-if-color")
+                                    actualRowValue = $(value3).attr('value')
+                                    actualRowValue = { "if": siCouleur };
+                                    Pattern.jsonFromHtml.push(actualRowValue)
+                                    console.log(Pattern.jsonFromHtml)
+                                }
+
+                                if ($(value3).hasClass("then-color")) {
+                                    console.log('then')
+                                    actualRowValue = $(value3).find(":selected").text();
+                                    actualRowValue = { "then": actualRowValue };
+                                    Pattern.jsonFromHtml.push(actualRowValue)
+                                }
+
+                                if ($(value3).hasClass("then-direction")) {
+                                    console.log('direction')
+                                    actualRowValue = $(value3).find(":selected").text();
+                                    actualRowValue = { "then": actualRowValue };
+                                    Pattern.jsonFromHtml.push(actualRowValue)
+                                }
+                            })
                         })
                     }
                 })
@@ -91,19 +123,22 @@ class Pattern {
         return html
     }
 
-    onPatternChange(e){
+    onPatternChange(e) {
         $(this).trigger('reset')
         Pattern.getStepByName($(e.currentTarget).val())
+
     }
 
-    onColorChange(e){
-        $(e.currentTarget).parent('td').parent('tr').nextAll('tr').each($.proxy(this.ClearRow, this))
 
+
+    onColorChange(e) {
+        $(e.currentTarget).parent('td').parent('tr').nextAll('tr').each($.proxy(this.ClearRow, this))
+        console.log($(e.currentTarget))
         //$(e.currentTarget).parent('td').parent('tr').prevAll('tr').each($.proxy(function(i,f){this.checkIfColorAvalaible(i,f,e.currentTarget)},this))
 
 
-        if($(e.currentTarget).val()!='#FFFFFF'){
-            let jsonObj = {"if": $(e.currentTarget).val()}
+        if ($(e.currentTarget).val() != '#FFFFFF') {
+            let jsonObj = { "if": $(e.currentTarget).val() }
             $('tbody').append(Pattern.GetHtmlRow(jsonObj))
         }
     }
