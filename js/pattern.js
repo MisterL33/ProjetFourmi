@@ -99,7 +99,7 @@ class Pattern {
     onColorChange(e){
         $(e.currentTarget).parent('td').parent('tr').nextAll('tr').each($.proxy(this.ClearRow, this))
 
-        $(e.currentTarget).parent('td').parent('tr').prevAll('tr').each($.proxy(function(i,f){this.checkIfColorAvalaible(i,f,e.currentTarget)},this))
+        //$(e.currentTarget).parent('td').parent('tr').prevAll('tr').each($.proxy(function(i,f){this.checkIfColorAvalaible(i,f,e.currentTarget)},this))
 
 
         if($(e.currentTarget).val()!='#FFFFFF'){
@@ -112,14 +112,13 @@ class Pattern {
         $(e).remove()
     }
 
-    checkIfColorAvalaible(i,e,parent){
-        if($(e).children('.then-color').children('select').val() == $(parent).val()){
-            console.log('dispo')
-        }else{
-            alert('couleur deja utilisé')
-            $(parent).val('#FFFFFF')
-        }
-    }
+    // checkIfColorAvalaible(i,e,parent){
+    //     if($(e).children('.then-color').children('select').val() == $(parent).val()){
+    //         console.log('dispo')
+    //     }else{
+    //         console.log('pas dispo')
+    //     }
+    // }
 }
 
 const PatternColor = Object.freeze({
