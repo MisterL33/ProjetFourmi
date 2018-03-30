@@ -68,7 +68,7 @@ class Langton {
         let turn = this.Ant.Direction
         let nbSteps = $('#NbSteps').val()
         let self = this // permet de recup la classe dans le each
-      
+      console.log(Pattern.jsonFromHtml)
         for (let i = 0; i < nbSteps; i++) {
         $.each(Pattern.selectedPatternData.steps, function (key, value) {
            

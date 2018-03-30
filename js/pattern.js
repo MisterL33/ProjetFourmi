@@ -5,6 +5,7 @@ class Pattern {
         this.allPatternData = null
         this.selectedPatternData = null
         this.controleDispoColor = true
+        this.jsonFromHtml = null
     }
     RegisterOnReady() {
         $($.proxy(this.onReady, this))
@@ -40,7 +41,11 @@ class Pattern {
     }
 
     static getStepByName(name) {
-
+        let siCouleur=null
+        let thenColor=null
+        let thenDirection=null
+        let actualRowValue=null
+        let obj = []
         Pattern.jsonFromHtml = []
         console.log(Pattern.jsonFromHtml)
         $.ajax({
@@ -57,37 +62,32 @@ class Pattern {
                         $.each(value.steps, function (key, value2) {
                             let html = Pattern.GetHtmlRow(value2)
                             $('tbody').append(html)
-                            let row = $(html)[0].childNodes
-                            $.each(row, function (key3, value3) {
-                                let actualRowValue = null
-                                let actualRowObject = {}
-                                let siCouleur = null
-                                if ($(value3).hasClass("if-color")) {
-                                    console.log('if')
-                                    siCouleur = $(value3).parent().attr("data-if-color")
-                                    actualRowValue = $(value3).attr('value')
-                                    actualRowValue = { "if": siCouleur };
-                                    Pattern.jsonFromHtml.push(actualRowValue)
-                                    console.log(Pattern.jsonFromHtml)
-                                }
+                            var tbl = $(html).get().map(function(row) {
+                                return $(row).find('td').get().map(function(cell) {
+                                    if($(cell).parent().attr("data-if-color")){
+                                        siCouleur = $(cell).parent().attr("data-if-color")
 
-                                if ($(value3).hasClass("then-color")) {
-                                    console.log('then')
-                                    actualRowValue = $(value3).find(":selected").text();
-                                    actualRowValue = { "then": actualRowValue };
-                                    Pattern.jsonFromHtml.push(actualRowValue)
-                                }
-
-                                if ($(value3).hasClass("then-direction")) {
-                                    console.log('direction')
-                                    actualRowValue = $(value3).find(":selected").text();
-                                    actualRowValue = { "then": actualRowValue };
-                                    Pattern.jsonFromHtml.push(actualRowValue)
-                                }
-                            })
+                                    }
+                                    if ($(cell).hasClass("then-color")) {
+                                        thenColor = $(cell).find(":selected").val();
+                                    }
+                                    if ($(cell).hasClass("then-direction")) {
+                                        thenDirection = $(cell).find(":selected").val();
+                                    }
+                                    
+                                    
+                                    
+                                  return $(cell).html();
+                                });
+                              });
+                              
+                           obj.push({'if': siCouleur, 'then':{'color': thenColor, 'direction': thenDirection}})
+                           
                         })
                     }
                 })
+                Pattern.jsonFromHtml = obj
+            console.log(Pattern.jsonFromHtml)
             }
         })
     }
