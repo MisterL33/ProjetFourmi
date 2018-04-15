@@ -1,13 +1,25 @@
 /// <reference path="ant.js" />
 /// <reference path="grid.js" />
 /// <reference path="pattern.js" />
-/// <reference path="simulation.js" />
+/// <reference path="simulation.js" />import { setInterval } from "timers";import { setTimeout } from "timers";
+
+
+
+
 
 class Langton {
+
     constructor() {
         this.Pattern = new Pattern()
         this.Simulation = new Simulation()
+        this.setIntervalVar = null
+        this.fourmiSortie = false
+        this.lancer = false
+        
+        
     }
+
+
     RegisterOnReady() {
         this.Pattern.RegisterOnReady()
         this.Simulation.RegisterOnReady()
@@ -18,8 +30,17 @@ class Langton {
         this.Grid = new Grid("Grid", this.Simulation.Size)
         this.Ant = new Ant(this.Grid.MiddleX, this.Grid.MiddleY)
         this.displayAntInfo()
-        console.log(this.Ant)
+
+
+        $('.condition').show();
+
+        $(this.Simulation).on('reset', $.proxy(this.onResetClick, this))
+        $(this.Pattern).on('reset', $.proxy(this.onResetClick, this))
         $(this.Ant).on("move", $.proxy(this.displayAntInfo, this))
+        $(this.Simulation).on('forward', $.proxy(this.avancerFourmi, this))
+        $(this.Simulation).on('run', $.proxy(this.onRunClick, this))
+        $(this.Simulation).on('stop', $.proxy(this.onStopClick, this))
+        $(this.Simulation).on('change', $.proxy(this.onSelectChange, this))
 
         console.log("Langton.onReady")
     }
@@ -30,6 +51,79 @@ class Langton {
         $('.ant-direction').text(this.Ant.Direction)
         $('.ant-nb-steps').text(this.Ant.NbSteps)
     }
+
+    onResetClick(e) {
+        $('#Start').text('Demarrer')
+        this.fourmiSortie=false
+        clearInterval(this.setIntervalVar);
+        this.lancer=false
+        this.Grid.Size = this.Simulation.Size
+        this.Ant.Reset(this.Grid.MiddleX, this.Grid.MiddleY)
+    }
+
+
+    avancerFourmi() {
+        // on set les infos
+        let caseColor = this.Grid.GetColor(this.Ant.X, this.Ant.Y)
+        let turn = this.Ant.Direction
+        let nbSteps = $('#NbSteps').val()
+        let self = this // permet de recup la classe dans le each
+
+        for (let i = 0; i < nbSteps; i++) {
+        $.each(Pattern.jsonFromHtml, function (key, value) {
+           
+ 
+                caseColor = self.Grid.GetColor(self.Ant.X, self.Ant.Y)
+                turn = self.Ant.Direction
+                if(caseColor === value.if){
+               
+                    self.Grid.SetColor(self.Ant.X, self.Ant.Y, value.then.color)
+                    self.Ant.Turn(value.then.direction)
+                }
+
+                
+              
+        })
+        if (self.Grid.GetColor(self.Ant.X, self.Ant.Y) === null && self.fourmiSortie === false) {
+            alert('La fourmie est partie')
+            self.fourmiSortie = true
+        }
+    }
+        
+      
+
+    }
+
+    onRunClick(e) {
+        if(!this.lancer){
+            let interval = $('#Interval').val()
+            this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), interval)
+            $('#Start').text('Stop')
+            this.lancer=true
+        }else{
+            $('#Start').text('Demarrer')
+            clearInterval(this.setIntervalVar);
+            this.lancer=false
+        }
+    }
+
+    onSelectChange(e, data) {
+
+        if (this.setIntervalVar !== undefined) {
+
+            clearInterval(this.setIntervalVar);
+          
+            this.setIntervalVar = setInterval($.proxy(this.avancerFourmi, this), data.interval)
+        }
+    }
+
+
+ 
+
+
+
+
+
 }
 
 let langton = new Langton()
